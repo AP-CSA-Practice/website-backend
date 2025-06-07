@@ -1,0 +1,25 @@
+// src/main/java/com/apcsa/practice/config/SecurityConfig.java
+package com.apcsa.practice.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/**").permitAll()  // 允許所有 /api/** 路徑
+                .anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.disable());  // 暫時關閉 CSRF 保護
+        
+        return http.build();
+    }
+}
