@@ -8,13 +8,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set up Docker
-      run: sudo sh ./install-docker.sh
-      
+
     - name: Run tests in Docker
-      run: sh ./run-tests.sh
-      
+      run: bash ./run-tests.sh
+
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
