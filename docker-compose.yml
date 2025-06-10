@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/apcsadb
+    volumes:
+      - ./src:/app/src
+      - ~/.m2:/root/.m2
+    command: ["mvn", "spring-boot:run"]
+
+  mongodb:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  test:
+    build: .
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/apcsadb_test
+    volumes:
+      - ./src:/app/src
+      - ~/.m2:/root/.m2
+    command: ["mvn", "test"]
+
+volumes:
+  mongodb_data:
